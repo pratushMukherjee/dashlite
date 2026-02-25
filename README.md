@@ -48,7 +48,7 @@ DashLite mirrors the architecture described in Dropbox's engineering blog ["Buil
                          └─────────────────────────┘
                               │              │
                     ┌─────────▼──┐    ┌──────▼──────┐
-                    │  SQLite    │    │  ChromaDB   │
+                    │  SQLite    │    │  Numpy   │
                     │ (metadata  │    │ (vectors +  │
                     │  + FTS5)   │    │  embeddings)│
                     └────────────┘    └─────────────┘
@@ -64,10 +64,32 @@ DashLite mirrors the architecture described in Dropbox's engineering blog ["Buil
 | **SQLite + Numpy Vector Store** | SQLite provides FTS5 for lexical search and metadata storage. A custom numpy-based vector store provides persistent cosine similarity search. Both are embedded (no external services needed). |
 | **FastAPI + React** | Matches Dropbox's tech stack (Python backend, React frontend). FastAPI provides async support, automatic OpenAPI docs, and WebSocket support. |
 
+## Screenshots
+
+### Dashboard
+![Dashboard](docs/screenshots/dashboard.png)
+*Hero search bar, live stats, activity feed, and suggested queries*
+
+### Hybrid Search
+![Search Results](docs/screenshots/search.png)
+*Reciprocal Rank Fusion merges keyword and semantic results across multiple document types*
+
+### Ask AI (RAG Q&A)
+![Ask AI](docs/screenshots/ask.png)
+*Natural language Q&A with streaming answers and source citations*
+
+### Multi-Step Agent
+![Agent](docs/screenshots/agent.png)
+*Plan → Execute → Synthesize pipeline with visible step timeline*
+
+### File Browser
+![Files](docs/screenshots/files.png)
+*Indexed documents with type, chunk count, and status indicators*
+
 ## Features
 
 - **File Ingestion** — Ingest PDFs, DOCX, TXT, Markdown, code files, and images (OCR via Tesseract)
-- **Hybrid Search** — Lexical (FTS5/BM25) + Semantic (ChromaDB) search merged with Reciprocal Rank Fusion
+- **Hybrid Search** — Lexical (FTS5/BM25) + Semantic (Numpy) search merged with Reciprocal Rank Fusion
 - **RAG Q&A** — Ask natural language questions, get answers grounded in your files with source citations
 - **Multi-Step Agent** — Plan → Execute → Synthesize across multiple documents with visible step timeline
 - **Document Summarization** — One-click AI summarization of any indexed document
@@ -99,7 +121,7 @@ DashLite mirrors the architecture described in Dropbox's engineering blog ["Buil
 
 ```bash
 # Clone
-git clone https://github.com/YOUR_USERNAME/dashlite.git
+git clone https://github.com/pratushMukherjee/dashlite.git
 cd dashlite
 
 # Backend
