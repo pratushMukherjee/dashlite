@@ -79,7 +79,8 @@ DashLite mirrors the architecture described in Dropbox's engineering blog ["Buil
 *Natural language Q&A with streaming answers and source citations*
 
 ### Multi-Step Agent
-![Agent](docs/screenshots/agent.png)
+<img width="1913" height="949" alt="agent" src="https://github.com/user-attachments/assets/8e9deb46-bcd1-4b3f-b13e-980cbdc0a4c4" />
+
 *Plan → Execute → Synthesize pipeline with visible step timeline*
 
 ### File Browser
