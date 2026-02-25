@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./demo/sample_files:/app/watched_files
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - WATCHED_DIRECTORY=/app/watched_files
+      - CHROMA_PERSIST_DIR=/app/data/chromadb
+      - SQLITE_URL=sqlite+aiosqlite:///./data/dashlite.db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_URL=http://localhost:8000

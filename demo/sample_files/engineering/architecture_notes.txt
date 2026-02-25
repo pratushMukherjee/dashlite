@@ -1,0 +1,46 @@
+Architecture Review Meeting Notes — January 15, 2026
+
+Attendees: Sarah (Tech Lead), James (Backend), Priya (ML), Marcus (Frontend), Lin (DevOps)
+
+TOPIC: CloudSync v2.0 Architecture Decision
+
+Decision 1: Move from monolith to microservices
+- Current monolith is hitting scaling limits at 500K concurrent users
+- Plan: decompose into 5 services: Auth, FileStore, SyncEngine, SearchIndex, NotificationHub
+- Timeline: 6-month migration, service by service
+- Risk: increased operational complexity (mitigated by Kubernetes + service mesh)
+- James argued for keeping the monolith and optimizing, but team voted for microservices
+
+Decision 2: Database strategy
+- FileStore: PostgreSQL for metadata, S3-compatible object storage for binary files
+- SyncEngine: Redis for real-time state, PostgreSQL for persistent sync records
+- SearchIndex: Elasticsearch for keyword search, Pinecone for vector/semantic search
+- Priya recommended ChromaDB for development/testing before moving to Pinecone in production
+
+Decision 3: Conflict resolution redesign
+- Current last-write-wins is causing data loss complaints (12 support tickets/week)
+- New approach: three-way merge with automatic resolution for non-overlapping changes
+- For overlapping changes: create a conflict branch and notify all editors
+- Sarah emphasized this is the highest priority for Q2
+
+Decision 4: Search improvements
+- Current search is keyword-only, missing semantic understanding
+- Plan: hybrid search combining BM25 (keyword) with vector similarity
+- Use Reciprocal Rank Fusion (RRF) to merge results from both systems
+- Priya to evaluate embedding models: all-MiniLM-L6-v2 vs text-embedding-3-small
+- Target: 50ms p95 latency for search queries
+
+Decision 5: Security audit findings
+- Must implement end-to-end encryption for enterprise tier by Q3
+- API rate limiting needs per-tenant quotas (currently global only)
+- OAuth token rotation must happen every 3600s (currently 86400s — too long)
+- See Security Review document for full findings
+
+Action Items:
+- James: Draft service boundaries and API contracts by Feb 1
+- Priya: Benchmark embedding models and report results by Jan 30
+- Marcus: Prototype new search UI with hybrid results by Feb 15
+- Lin: Set up Kubernetes cluster for staging environment by Feb 1
+- Sarah: Update project roadmap with revised timeline
+
+Next review: February 12, 2026
